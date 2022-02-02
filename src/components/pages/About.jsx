@@ -1,7 +1,7 @@
-import React from 'react';
-
-const About = () =>{
-  return <div>About Page</div>;
-}
+import React from "react";
+import Card from "../shared/Card";
+const About = () => {
+  return <Card>About Page</Card>;
+};
 
 export default About;

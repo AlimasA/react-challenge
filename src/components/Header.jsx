@@ -1,11 +1,15 @@
-import React from 'react';
-
-const Header = () =>{
+import React from "react";
+import SelectCountry from "./SelectCountry";
+import { StyledHeader } from "./styles/StyledHeader.styled";
+import Container from "./styles/Container";
+const Header = () => {
   return (
-      <nav>
-          <select disabled id='countrySelect' name='countrySelect'></select>
-      </nav>
+    <StyledHeader>
+      <Container>
+        <SelectCountry />
+      </Container>
+    </StyledHeader>
   );
-}
+};
 
 export default Header;

@@ -1,71 +1,72 @@
-import React,{useEffect, useState}  from 'react';
-import { LoaderSpan } from '../styles/LoaderSpan.styled';
-import { Loading_animation } from '../styles/Loading_animation';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { LoaderSpan } from "../styles/LoaderSpan.styled";
+import { Loading_animation } from "../styles/Loading_animation";
+import axios from "axios";
+import Header from "../Header";
+import $ from "jquery";
+import Card from "../shared/Card";
+// import Map from "../Map";
 
-const Gazetteer = () =>{
-  let data = {
-    "api_name": "countryBorders"
-  }
+const Gazetteer = () => {
   const [loading, setLoading] = useState(true);
-  const [countryName, setCountryName] = useState('');
-  const headers= {
-        'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",
-    }
-    // Example POST method implementation:
-async function postData(url = '', data = {}) {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  const [countryName, setCountryName] = useState("");
+  const [location, setLocation] = useState({
+    latitude: 0,
+    longitude: 0,
   });
-  return response.json(); // parses JSON response into native JavaScript objects
-}
 
-postData("./getApi.php",{
-            "api_name": "countryBorders"
-          })
-  .then(data => {
-    console.log(data); // JSON data parsed by `data.json()` call
-  });
-  useEffect(()=>{
-   navigator.geolocation.getCurrentPosition(function(position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position);
+      setLocation({
+        latitude: position.coords.latitude,
+        longitude: 5,
+      });
     });
 
-//     axios
-//   .get("http://localhost:3000/php/getApi.php",{api_name: "countryBorders"}
-//   ,headers).then(response => {
-//     // manipulate the response here
-//     console.log(response)
-// })
-// .catch(function(error) {
-//     // manipulate the error response here
-// });
-  })
+    console.log(location);
+
+    const url = "http://localhost:80/php/getApi.php";
+    // send a POST request
+    axios({
+      method: "post",
+      url: url,
+      data: {
+        api_name: "countryBorders",
+      },
+    })
+      .then(
+        (response) => {
+          response["data"].data.features.forEach((feature) => {
+            $("<option>", {
+              value: feature.properties.iso_a2,
+              text: feature.properties.name,
+            }).appendTo("#countrySelect");
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
+      .then(setLoading(false));
+  }, []);
 
   return (
-          <>
-            {loading && 
-            <>
-              <LoaderSpan>Loading...</LoaderSpan>
-              <Loading_animation endDeg="360deg"/>
-              <Loading_animation endDeg="-360deg"/>
-            </>
-     }
-          </>
+    <>
+      {loading && (
+        <>
+          <LoaderSpan>Loading...</LoaderSpan>
+          <Loading_animation endDeg="360deg" />
+          <Loading_animation endDeg="-360deg" />
+        </>
+      )}
+      <Header bg="red"></Header>
+      {/* <Map></Map> */}
+      <a href="https://andriusalimas.co.uk/project1/">
+        <h4>Go To Project</h4>
+      </a>
+    </>
   );
-}
+};
 
 export default Gazetteer;
