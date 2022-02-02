@@ -1,32 +1,26 @@
 import React from 'react';
-import logo from './andrita_logo.svg';
+import Navbar from './components/Navbar';
+import About from './components/pages/About';
 import { Container } from "./components/styles/Container.styled";
-import 'bootstrap/dist/css/bootstrap.css';
-import { Nav, Navbar, NavLink} from "react-bootstrap";
+import {Route, Routes} from 'react-router-dom';
+import Travel from './components/pages/Travel';
+import Feedback from './components/pages/Feedback';
+import Gazetteer from './components/pages/Gazetteer';
+import Contact from './components/pages/Contact';
+
 
 const App = () => {
+  
   return (
     <>
-     <Navbar bg="warning" variant="light" fixed="bottom" expand="sm">
-        <Navbar.Brand>
-            <img src={logo} alt=""  />
-        </Navbar.Brand>
-
-        <Navbar.Toggle />
-        <Navbar.Collapse>
-                    <Nav>
-          <Nav.Link href='#'>About us</Nav.Link>
-          <Nav.Link href='#'>Travel</Nav.Link>
-          <Nav.Link href='#'>Feedback</Nav.Link>
-          <Nav.Link href='#'>Gazetteer</Nav.Link>
-          <Nav.Link href='#'>Contact us</Nav.Link>
-        </Nav>
-        </Navbar.Collapse>
-
-     </Navbar>
-       <Container>
-          <h1>Hello App</h1>
-      </Container>
+      <Navbar />
+      <Routes>
+          <Route path="/about-us" element={<About />} />
+          <Route path="/travel" element={<Travel />} />
+          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/gazetteer" element={<Gazetteer />} />
+          <Route path="/contact" element={<Contact />} />
+      </Routes>
     </>
   )
 }
