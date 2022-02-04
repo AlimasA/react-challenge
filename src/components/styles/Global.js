@@ -24,6 +24,11 @@ ul {
   list-style: none;
 }
 
+iframe{
+  width: 100%;
+  
+}
+
 .container {
   max-width: 768px;
   margin: auto;

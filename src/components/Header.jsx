@@ -2,11 +2,11 @@ import React from "react";
 import SelectCountry from "./SelectCountry";
 import { StyledHeader } from "./styles/StyledHeader.styled";
 import Container from "./styles/Container";
-const Header = () => {
+const Header = ({ handleChange }) => {
   return (
     <StyledHeader>
       <Container>
-        <SelectCountry />
+        <SelectCountry handleChange={handleChange} />
       </Container>
     </StyledHeader>
   );

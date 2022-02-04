@@ -4,27 +4,31 @@ import { Loading_animation } from "../styles/Loading_animation";
 import axios from "axios";
 import Header from "../Header";
 import $ from "jquery";
-import Card from "../shared/Card";
 // import Map from "../Map";
 
-const Gazetteer = () => {
-  const [loading, setLoading] = useState(true);
-  const [countryName, setCountryName] = useState("");
-  const [location, setLocation] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
+const Gazetteer = ({
+  country,
+  changeCountry,
+  loading,
+  setLoading,
+  location,
+  setMyLocation,
+}) => {
+  const handleChange = ({ target }) => {
+    if (target.value !== null || target.value !== "") {
+      console.log("selected ");
+    }
+    let select = $("#countrySelect option:selected").text();
+
+    changeCountry(select);
+  };
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       console.log(position);
-      setLocation({
-        latitude: position.coords.latitude,
-        longitude: 5,
-      });
+      // setMyLocation(position.coords.latitude, position.coords.longitude);
+      console.log(location);
     });
-
-    console.log(location);
 
     const url = "http://localhost:80/php/getApi.php";
     // send a POST request
@@ -48,7 +52,7 @@ const Gazetteer = () => {
           console.log(error);
         }
       )
-      .then(setLoading(false));
+      .then(setLoading(true));
   }, []);
 
   return (
@@ -60,7 +64,8 @@ const Gazetteer = () => {
           <Loading_animation endDeg="-360deg" />
         </>
       )}
-      <Header bg="red"></Header>
+      <Header handleChange={handleChange}></Header>
+      <h1>Country Selected: {country}</h1>
       {/* <Map></Map> */}
       <a href="https://andriusalimas.co.uk/project1/">
         <h4>Go To Project</h4>

@@ -1,12 +1,12 @@
 import React from "react";
 
 import { StyledSelect } from "./styles/StyledSelect.styled";
-const SelectCountry = ({}) => {
+const SelectCountry = ({ handleChange }) => {
   return (
     <StyledSelect
       id="countrySelect"
       name="countrySelect"
-      onChange={console.log("Hello")}></StyledSelect>
+      onChange={handleChange}></StyledSelect>
   );
 };
 
